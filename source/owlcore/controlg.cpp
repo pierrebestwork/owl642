@@ -53,7 +53,7 @@ TControlGadget::SetBounds(const TRect& bounds)
   // Set the gadget bounds, then move & repaint the control
   //
   TGadget::SetBounds(bounds);
-  Control->SetWindowPos(0, Bounds, SWP_NOACTIVATE|SWP_NOZORDER|SWP_NOSIZE);
+  Control->SetWindowPos(0, Bounds, SWP_NOACTIVATE|SWP_NOZORDER);
 
   TRACEX(OwlGadget, 1, "TControlGadget::SetBounds() leave @" << (void*)this <<
     " bounds = " << bounds);

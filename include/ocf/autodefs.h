@@ -1243,6 +1243,7 @@ class _OCFCLASS TAutoProxyArgs {
 
   private:
     int       Count;
+    int       Unused;	// provides padding for MS version so that TAutoVal[s] that follow are aligned according for (this+1) on 8 byte boundary
 };
 
 /// \class TAutoArgs

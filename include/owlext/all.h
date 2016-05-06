@@ -21,6 +21,10 @@
 # include <owlext/util.h>
 #endif
 
+#if !defined (__OWLEXT_BUSY_H)
+# include <owlext/busy.h>
+#endif
+
 // Extended-TApplication classes (Core, Chapter Two)
 //
 #if !defined (__OWLEXT_SIMPLAPP_H)

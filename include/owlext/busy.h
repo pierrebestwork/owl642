@@ -38,9 +38,8 @@ class OWLEXTCLASS TBusyCursor {
   // Object lifetime methods
   //
   public:
-    explicit TBusyCursor(owl::tstring message);
-    TBusyCursor();
-    ~TBusyCursor();
+		TBusyCursor(bool bActivate = true);
+		virtual ~TBusyCursor();
 
   // Accessors
   //
@@ -48,6 +47,8 @@ class OWLEXTCLASS TBusyCursor {
     bool Active() const;
     owl::tstring Message() const;
     static bool GloballyActive ();
+		static TBusyCursor* GetTop() { return (sTop); }
+		virtual bool FilterWindow (HWND hWnd);
 
   // Mutators
   //
@@ -62,17 +63,16 @@ class OWLEXTCLASS TBusyCursor {
 
   // Internal methods
   //
-  private:
+	protected:
     void Init();
     void Activate();
     void Deactivate();
 
   // Internal data
   //
-  private:
+	protected:
     static TBusyCursor* sTop;
     TBusyCursor* mNext;
-    HCURSOR mBusyCursor;
     owl::tstring mMessage;
     bool mActive;
 };
@@ -91,7 +91,7 @@ inline owl::tstring TBusyCursor::Message() const
 { return mMessage; }
 
 inline bool TBusyCursor::GloballyActive ()
-{ return sTop ? sTop->Active() : false; }
+{ return (sTop) ? sTop->Active() : false; }
 
 inline void TBusyCursor::UpdateMessage(const owl::tstring& s)
 { UpdateMessage (s.length() > 0 ? s.c_str() : 0); }

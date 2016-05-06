@@ -42,11 +42,6 @@ return owl::tstring (className);
 */
 #endif
 
-static bool FilterWindow (HWND hWnd)
-{
-  bool filter = !::IsWindowEnabled (hWnd) || !::IsWindowVisible (hWnd);
-  return filter;
-}
 
 //--------------------------------------------------------------------------
 class TCountWindows : public OwlExt::TEnumWindows{
@@ -64,7 +59,7 @@ protected:
 bool
 TCountWindows::OnEnumWindow (HWND hWnd)
 {
-  if(!FilterWindow (hWnd))
+	if(!TBusyCursor::GetTop()->FilterWindow (hWnd))
     ++mCount;
 
   return true;
@@ -91,7 +86,7 @@ protected:
 
 bool TSubclassWindows::OnEnumWindow (HWND hWnd)
 {
-  if (!FilterWindow (hWnd)){
+	if (!TBusyCursor::GetTop()->FilterWindow (hWnd)){
     mWnd->hWnd = hWnd;
     mWnd->fnPrevWndProc = (WNDPROC)::SetWindowLongPtr(hWnd, GWLP_WNDPROC, mFnSubclass);
     ++mWnd;
@@ -205,19 +200,16 @@ LRESULT TBusyHook::DefWndProc (HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 
 //--------------------------------------------------------------------------
 
-TBusyCursor* TBusyCursor::sTop;
+TBusyCursor* TBusyCursor::sTop(0);
 
-TBusyCursor::TBusyCursor (owl::tstring message)
-:
-mMessage (message)
+TBusyCursor::TBusyCursor (bool bActivate /* = true */)
 {
   Init();
-}
 
-
-TBusyCursor::TBusyCursor ()
+	if (bActivate)
 {
-  Init();
+		Active(true);
+	}
 }
 
 
@@ -225,10 +217,8 @@ void TBusyCursor::Init ()
 {
   mNext       = sTop;
   sTop        = this;
-  mActive     = true;
-  mBusyCursor = ::LoadCursor (0, IDC_WAIT);
+	mActive     = false;
 
-  Activate ();
 }
 
 
@@ -269,9 +259,12 @@ void TBusyCursor::Active (bool active)
 //
 void TBusyCursor::Activate ()
 {
-  ::SetCursor (mBusyCursor);
+	// only the 1st instance can start the hook
+	if (mNext == NULL)
+	{
   PRECONDITION(sHook == 0);
   sHook = new TBusyHook;
+	}
 
   UpdateMessage (mMessage.c_str());
 }
@@ -282,9 +275,12 @@ void TBusyCursor::Activate ()
 //
 void TBusyCursor::Deactivate ()
 {
+	if (mNext == NULL)
+	{
   PRECONDITION (sHook != 0);
   delete sHook;
   sHook = 0;
+	}
 
   UpdateMessage (0);
 }
@@ -316,6 +312,11 @@ void TBusyCursor::UpdateMessage(LPCTSTR message)
 }
 
 
+bool TBusyCursor::FilterWindow (HWND hWnd)
+{
+	bool filter = !::IsWindowEnabled (hWnd) || !::IsWindowVisible (hWnd);
+	return filter;
+}
 } // OwlExt namespace
 
 //==============================================================================

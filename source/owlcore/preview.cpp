@@ -277,26 +277,15 @@ GetPageSizeInPixels(TPrintDC& d)
 void
 TPrintPreviewDC::ReScale()
 {
-  // Get the extents of the screen viewport in device units (pixels).
-  // This should represent the whole previewed page on the screen.
+  TSize scrve;
+  ::GetViewportExtEx(GetHDC(), &scrve);
 
-  TSize ve; ::GetViewportExtEx(GetHDC(), &ve);
-
-  // Calculate the size of the previewed page in logical units.
-
-  TSize page = GetPageSizeInPixels(PrnDC);
-  TSize pve = PrnDC.GetViewportExt();
-  TSize pwe = PrnDC.GetWindowExt();
-  TSize we(MulDiv(page.cx, pwe.cx, pve.cx), MulDiv(page.cy, pwe.cy, pve.cy));
-
-  // Set the mapping mode and scale.
+  TPoint scrwe(PrnDC.GetDeviceCaps(HORZRES), PrnDC.GetDeviceCaps(VERTRES));
+  PrnDC.DPtoLP(&scrwe);
 
   ::SetMapMode(GetHDC(), MM_ANISOTROPIC);
-  ::SetWindowExtEx(GetHDC(), we.cx, we.cy, 0);
-  ::SetViewportExtEx(GetHDC(), ve.cx, ve.cy, 0);
-
-  // Set the origin for logical units.
-
+  ::SetWindowExtEx(GetHDC(), scrwe.x, scrwe.y, 0);
+  ::SetViewportExtEx(GetHDC(), scrve.cx, scrve.cy, 0);
   ReOrg();
 }
 
@@ -307,23 +296,13 @@ TPrintPreviewDC::ReScale()
 void
 TPrintPreviewDC::ReOrg()
 {
-  // Get the viewport origin of the printer DC and transform it into
-  // screen device units. It is assumed that the viewport extents of
-  // the screen DC represent the whole previewed page.
+  TPoint origin = PrnDC.GetViewportOrg();
+  PrnDC.DPtoLP(&origin);
+  LPtoSDP(&origin);
+  ::SetViewportOrgEx(GetHDC(), origin.x, origin.y, 0);
 
-  TPoint pvo = PrnDC.GetViewportOrg();
-  TSize page = GetPageSizeInPixels(PrnDC);
-  TSize ve; ::GetViewportExtEx(GetHDC(), &ve); // screen extents
-  TPoint vo(MulDiv(pvo.x, ve.cx, page.cx), MulDiv(pvo.y, ve.cy, page.cy));
-
-  // Use the same logical origin as the printout.
-
-  TPoint wo = PrnDC.GetWindowOrg();
-
-  // Set the origins.
-
-  ::SetWindowOrgEx(GetHDC(), wo.x, wo.y, 0);
-  ::SetViewportOrgEx(GetHDC(), vo.x, vo.y, 0);
+  PrnDC.GetWindowOrg(origin);
+  ::SetWindowOrgEx(GetHDC(), origin.x, origin.y, 0);
 }
 
 //
