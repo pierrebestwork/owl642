@@ -417,12 +417,10 @@ TPrintDialog::TData* TPrinter::GetData()
 }
 
 //
-/// Sets the common dialog data; takes ownership.
+/// Sets the common dialog data
 //
 void TPrinter::SetData(TPrintDialog::TData* data)
 {
-  if (data == Data) return;
-  if (Data) delete Data;
   Data = data;
 }
 

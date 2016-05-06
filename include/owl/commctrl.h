@@ -974,6 +974,9 @@ template <> struct TDispatch<WM_NOTIFY>
   struct TNotificationDispatch : TNotificationDispatchBase<NotificationCode, TResult, NMHDR&>
   {};
 
+  template <uint NotificationCode>
+  struct TLVNotificationDispatch : TNotificationDispatchBase<NotificationCode, TResult, NMHDR&>
+  {};
 };
 
 template <> struct TDispatch<WM_NOTIFY>::TNotificationDispatch<NM_CHAR> : TNotificationDispatchBase<NM_CHAR, void, TNmChar&> {};
@@ -1002,7 +1005,7 @@ template <> struct TDispatch<WM_NOTIFY>::TNotificationDispatch<HDN_ENDDRAG> : TN
 template <> struct TDispatch<WM_NOTIFY>::TNotificationDispatch<HDN_ENDTRACK> : TNotificationDispatchBase<HDN_ENDTRACK, void, THdrNotify&> {};
 template <> struct TDispatch<WM_NOTIFY>::TNotificationDispatch<HDN_GETDISPINFO> : TNotificationDispatchBase<HDN_GETDISPINFO, void, THdrNotify&> {};
 template <> struct TDispatch<WM_NOTIFY>::TNotificationDispatch<HDN_ITEMCHANGED> : TNotificationDispatchBase<HDN_ITEMCHANGED, void, THdrNotify&> {};
-template <> struct TDispatch<WM_NOTIFY>::TNotificationDispatch<HDN_ITEMCHANGING> : TNotificationDispatchBase<HDN_ITEMCHANGING, void, THdrNotify&> {};
+template <> struct TDispatch<WM_NOTIFY>::TNotificationDispatch<HDN_ITEMCHANGING> : TNotificationDispatchBase<HDN_ITEMCHANGING, bool, THdrNotify&> {};
 template <> struct TDispatch<WM_NOTIFY>::TNotificationDispatch<HDN_ITEMCLICK> : TNotificationDispatchBase<HDN_ITEMCLICK, void, THdrNotify&> {};
 template <> struct TDispatch<WM_NOTIFY>::TNotificationDispatch<HDN_ITEMDBLCLICK> : TNotificationDispatchBase<HDN_ITEMDBLCLICK, void, THdrNotify&> {};
 template <> struct TDispatch<WM_NOTIFY>::TNotificationDispatch<HDN_TRACK> : TNotificationDispatchBase<HDN_TRACK, bool, THdrNotify&> {};
@@ -1067,6 +1070,9 @@ template <> struct TDispatch<WM_NOTIFY>::TNotificationDispatch<LVN_ODCACHEHINT> 
 template <> struct TDispatch<WM_NOTIFY>::TNotificationDispatch<LVN_ODFINDITEM> : TNotificationDispatchBase<LVN_ODFINDITEM, int, TLvFindItem&> {};
 template <> struct TDispatch<WM_NOTIFY>::TNotificationDispatch<LVN_ODSTATECHANGED> : TNotificationDispatchBase<LVN_ODSTATECHANGED, bool, TLvOdStateChanged&> {};
 template <> struct TDispatch<WM_NOTIFY>::TNotificationDispatch<LVN_SETDISPINFO> : TNotificationDispatchBase<LVN_SETDISPINFO, void, TLvDispInfoNotify&> {};
+template <> struct TDispatch<WM_NOTIFY>::TLVNotificationDispatch<NM_CLICK> : TNotificationDispatchBase<NM_CLICK, void, TLvNotify&> {};
+template <> struct TDispatch<WM_NOTIFY>::TLVNotificationDispatch<NM_DBLCLK> : TNotificationDispatchBase<NM_DBLCLK, void, TLvNotify&> {};
+template <> struct TDispatch<WM_NOTIFY>::TLVNotificationDispatch<NM_CUSTOMDRAW> : TNotificationDispatchBase<NM_CUSTOMDRAW, int, TLvCustomDraw&> {};
 
 template <> struct TDispatch<WM_NOTIFY>::TNotificationDispatch<RBN_AUTOSIZE> : TNotificationDispatchBase<RBN_AUTOSIZE, void, TNotify&> {};
 template <> struct TDispatch<WM_NOTIFY>::TNotificationDispatch<RBN_BEGINDRAG> : TNotificationDispatchBase<RBN_BEGINDRAG, bool, TNotify&> {};
@@ -1663,6 +1669,16 @@ DECLARE_SIGNATURE1(bool,b_SELCHANGE_Sig,TSelChange &)
 /// void method(TLvDispInfoNotify&)
 //
 #define EV_LVN_SETDISPINFO(id, method) OWL_EV_NOTIFICATION(LVN_SETDISPINFO, id, method)
+
+
+// specialised LV signatures
+#define OWL_LVN_NOTIFICATION(notificationCode, sourceId, method)\
+  {{notificationCode}, sourceId,\
+    OWL_DISPATCH(::owl::TDispatch<WM_NOTIFY>::TLVNotificationDispatch<notificationCode>::Decode, method)}
+
+#define EV_LVN_CLICK(id, method) OWL_LVN_NOTIFICATION(NM_CLICK, id, method)
+#define EV_LVN_DBLCLK(id, method) OWL_LVN_NOTIFICATION(NM_DBLCLK, id, method)
+#define EV_LVN_CUSTOMDRAW(id, method) OWL_LVN_NOTIFICATION(NM_CUSTOMDRAW, id, method)
 
 /// @}
 

@@ -186,7 +186,7 @@ TLvItem::TLvItem(const LVITEM& item)
 
 TLvItem::TLvItem(const TLvItem& item)
 {
-  *this = item;
+  *this = static_cast<const LVITEM&>(item);
 }
 
 TLvItem& TLvItem::operator =(const LVITEM& item)
@@ -411,7 +411,7 @@ TLvColumn::TLvColumn(const LVCOLUMN& column)
 
 TLvColumn::TLvColumn(const TLvColumn& column)
 {
-  *this = column;
+  *this = static_cast<const LVCOLUMN&>(column);
 }
 
 TLvColumn& TLvColumn::operator =(const LVCOLUMN& column)
