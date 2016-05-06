@@ -1,0 +1,18 @@
+#include "treeview.rh"
+
+IDB_ICONS BITMAP "icons.bmp"
+
+IDM_MAINMENU MENU
+{
+ POPUP "&Item"
+ {
+  MENUITEM "&Make selected item bold", CM_SETSTATE
+  MENUITEM "&Check item expansion state", CM_GETSTATE
+ }
+}
+
+#if !defined(_OWLDLL)
+
+#include <owl/except.rc>
+
+#endif

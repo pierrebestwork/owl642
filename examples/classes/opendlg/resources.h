@@ -1,0 +1,10 @@
+#define MAIN_MENU 100
+
+#define CM_ABOUT 101
+
+#define CM_SHAREWARN        110
+#define CM_SHARENOWARN      111
+#define CM_SHAREFALLTHROUGH 112
+#define CM_EXPLORERSTYLE    113
+
+

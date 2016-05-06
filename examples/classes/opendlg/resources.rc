@@ -1,0 +1,31 @@
+
+#include <windows.h>
+#include <owl/window.rh>
+#include <owl/editfile.rh>
+
+#include "resources.h"
+
+MAIN_MENU MENU
+{
+ POPUP "&File"
+ {
+  MENUITEM "&Open", CM_FILEOPEN
+  MENUITEM SEPARATOR
+  MENUITEM "E&xit", CM_EXIT
+ }
+
+ POPUP "&Options"
+ {
+  MENUITEM "&Share warn", CM_SHAREWARN
+  MENUITEM "Share &no warn", CM_SHARENOWARN
+  MENUITEM "Share &fall through", CM_SHAREFALLTHROUGH
+  MENUITEM SEPARATOR
+  MENUITEM "&Explorer style", CM_EXPLORERSTYLE
+ }
+
+ POPUP "&Help", HELP
+ {
+  MENUITEM "&About", CM_ABOUT
+ }
+}
+

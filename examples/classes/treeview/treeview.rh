@@ -1,0 +1,5 @@
+#define IDB_ICONS 1001
+#define IDM_MAINMENU 1002
+
+#define CM_GETSTATE 101
+#define CM_SETSTATE 102
