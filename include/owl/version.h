@@ -28,7 +28,7 @@
 // All other version numbers and strings should be defined in terms of this.
 // NB! No leading zeroes in the numbers! (leading zero = octal)
 //
-#define OWL_VERSION(v) v(6,42,5,28305)
+#define OWL_VERSION(v) v(6,42,5,28309)
 
 // OWL File Version (major, minor, release, build)
 //
@@ -69,8 +69,8 @@
 
 // Revision information
 //
-#define OWL_BUILD_REVISION 28305
-#define OWL_BUILD_REVISION_DATE "2016/05/06 09:36:51"
+#define OWL_BUILD_REVISION 28309
+#define OWL_BUILD_REVISION_DATE "2016/05/06 10:35:33"
 #define OWL_BUILD_MIXED 0 // If the build is based on mixed revisions of code then 1, else 0.
 #define OWL_BUILD_DIRTY 1 // If the build was using modified source code then 1, else 0.
 

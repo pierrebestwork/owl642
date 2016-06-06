@@ -19,6 +19,10 @@
 
 #include <owl/wsysinc.h>
 
+#ifndef SM_CXPADDEDBORDER
+#define SM_CXPADDEDBORDER       92
+#endif
+
 
 namespace owl {
 
@@ -157,7 +161,14 @@ inline TUIMetric::operator int() const {
 
 //
 inline int TUIMetric::Get() const {
-  return Get(I);
+#if _MSC_VER > 1600
+// add SM_CXPADDEDBORDER to GetSystemMetrics SM_CXFRAME & SM_CYFRAME
+// (see http://stackoverflow.com/questions/14725781/getsystemmetrics-returns-different-results-for-net-4-5-net-4-0)
+	bool bAddBorder(I == SM_CXFRAME || I == SM_CYFRAME);
+	return ((bAddBorder) ? Get(I) + ::GetSystemMetrics(SM_CXPADDEDBORDER) : Get(I));
+#else
+	return Get(I);
+#endif
 }
 
 //
