@@ -801,6 +801,9 @@
     <ClInclude Include="..\..\..\include\owl\docview.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\owl\doublescroller.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\include\owl\draglist.h">
       <Filter>Header Files</Filter>
     </ClInclude>
