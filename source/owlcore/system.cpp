@@ -15,6 +15,8 @@
 #include <owl/registry.h>
 #include <map>
 
+#include <intrin.h>
+
 #ifdef _WIN64
 #ifdef BI_COMP_MSC
 # include <intrin.h>

@@ -405,7 +405,7 @@ class _OWLCLASS ipstream : virtual public pstream {
 
     std::streampos  tellg();
     ipstream&  seekg( std::streampos );
-    ipstream&  seekg( std::streamoff, std::ios::seek_dir );
+    ipstream&  seekg( std::streamoff, std::ios::seekdir );
 
     uint8  readByte();
     void  readBytes( void *, size_t );
@@ -494,7 +494,7 @@ class _OWLCLASS opstream : virtual public pstream {
 
     std::streampos  tellp();
     opstream&  seekp( std::streampos );
-    opstream&  seekp( std::streamoff, std::ios::seek_dir );
+    opstream&  seekp( std::streamoff, std::ios::seekdir );
     opstream&  flush();
 
     void  writeByte( uint8 );

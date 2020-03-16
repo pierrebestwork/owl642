@@ -287,7 +287,7 @@ class _OWLCLASS TNoteTab : public TControl {
     int TabSpacing;
     int TabTapering;
     int SelectedTabProtrusion;
-    std::auto_ptr<TFont> TabFont;
+    std::unique_ptr<TFont> TabFont;
     std::unique_ptr<TFont> SelectedTabFont;
     TColor TabColor;
     TColor SelectedTabColor;
@@ -308,7 +308,7 @@ class _OWLCLASS TNoteTab : public TControl {
     TScrollBar*  ScrollBar;
     TAbsLocation ScrollLoc;
     TCelArray*  CelArray;
-    std::auto_ptr<TCelArray> OwnedCelArray;
+    std::unique_ptr<TCelArray> OwnedCelArray;
     TColor TransparentColor;
     TRect LastClientRectPainted;
     TRect EffectiveTabsArea;
