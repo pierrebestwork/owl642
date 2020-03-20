@@ -421,7 +421,7 @@ ipstream& ipstream::seekg( streampos pos )
 /// - \c \b    beg (start of stream)
 /// - \c \b    cur (current stream position)
 /// - \c \b    end (end of stream).
-ipstream& ipstream::seekg( streamoff off, ios::seek_dir dir )
+ipstream& ipstream::seekg(streamoff off, ios::seekdir dir) 
 {
   if( good() ){
     objs.RemoveAll();
@@ -429,7 +429,7 @@ ipstream& ipstream::seekg( streamoff off, ios::seek_dir dir )
 //In GCC ios_base::seek_dir is deprecated by ios_base::seekdir (both exists but cast is needed)
     streampos p = bp->pubseekoff(off, (ios_base::seekdir)dir, ios::in );
 #else
-    streampos p = bp->pubseekoff((ios::off_type)off, dir, (ios::open_mode)ios::in );
+    streampos p = bp->pubseekoff((ios::off_type)off, dir, static_cast<ios::openmode>(ios::in));
 #endif
     if( p == streampos(EOF) )
       clear( ios::failbit );
@@ -777,8 +777,8 @@ opstream& opstream::seekp( streampos pos )
 //In GCC ios_base::seek_dir is deprecated by ios_base::seekdir
     streampos p = bp->pubseekoff(pos, ios::beg, ios::out);
 #else
-    streampos p = bp->pubseekoff((ios::off_type)pos, (ios::seek_dir)ios::beg,
-                                 (ios::open_mode)ios::out);
+    streampos p = bp->pubseekoff((ios::off_type)pos, (ios::seekdir)ios::beg,
+                                 (ios::openmode)ios::out);
 #endif
     if( p == streampos(EOF) )
       clear( ios::failbit );
@@ -792,7 +792,7 @@ opstream& opstream::seekp( streampos pos )
 /// - \c \b  beg (start of stream)
 /// - \c \b  cur (current stream position)
 /// - \c \b  end (end of stream).
-opstream& opstream::seekp( streamoff off, ios::seek_dir dir )
+opstream& opstream::seekp( streamoff off, ios::seekdir dir )
 {
   if( good() ){
     objs->RemoveAll();
@@ -800,7 +800,7 @@ opstream& opstream::seekp( streamoff off, ios::seek_dir dir )
 //In GCC ios_base::seek_dir is deprecated by ios_base::seekdir
     streampos p = bp->pubseekoff(off, (ios::seekdir)dir, ios::out );
 #else
-    streampos p = bp->pubseekoff((ios::off_type)off, dir, (ios::open_mode)ios::out );
+    streampos p = bp->pubseekoff((ios::off_type)off, dir, (ios::openmode)ios::out );
 #endif
     if( p == streampos(EOF) )
       clear( ios::failbit );

@@ -1475,7 +1475,7 @@ class _OWLCLASS TDelegatedTransferWindow
 public:
 
   typedef void TTransferFunctionSignature(const TTransferInfo&);
-  typedef std::tr1::function<TTransferFunctionSignature> TTransferFunction;
+  typedef std::function<TTransferFunctionSignature> TTransferFunction;
 
   TDelegatedTransferWindow(TTransferFunction f);
 
@@ -1552,8 +1552,8 @@ private:
 
   const TValue* Begin;
   const TValue* End;
-  std::tr1::function<TValue()> Getter;
-  std::tr1::function<void(TValue)> Setter;
+  std::function<TValue()> Getter;
+  std::function<void(TValue)> Setter;
 };
 
 
